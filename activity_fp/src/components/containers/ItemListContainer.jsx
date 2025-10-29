@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import GreetingMessage from "./GreetingMessage";
+import GreetingMessage from "../presentational/GreetingMessage";
 import styles from "./ItemListContainer.module.css";
-import ItemList from "./ItemList";
+import ItemList from "../presentational/ItemList";
 
 const itemsData = [
   {
