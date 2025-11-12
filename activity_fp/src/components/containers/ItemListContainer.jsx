@@ -1,55 +1,30 @@
 import { useEffect, useState } from "react";
+import { getFirestore, collection, getDocs } from "firebase/firestore"
+import { app } from "../../firebase/config";
 import GreetingMessage from "../presentational/GreetingMessage";
 import styles from "./ItemListContainer.module.css";
 import ItemList from "../presentational/ItemList";
-
-const itemsData = [
-  {
-    id: 1,
-    imageUrl: "https://picsum.photos/200",
-    name: 'Product 1',
-    price: 10
-  },
-  {
-    id: 2,
-    imageUrl: "https://picsum.photos/200",
-    name: 'Product 2',
-    price: 20
-  },
-  {
-    id: 3,
-    imageUrl: "https://picsum.photos/200",
-    name: 'Product 3',
-    price: 30
-  },
-  {
-    id: 4,
-    imageUrl: "https://picsum.photos/200",
-    name: 'Product 4',
-    price: 40
-  },
-
-  {
-    id: 5,
-    imageUrl: "https://picsum.photos/200",
-    name: 'Product 5',
-    price: 50
-  },
-];
-
-const fetchItems = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(itemsData);
-    }, 2000);
-  });
-};
 
 const ItemListContainer = ({ greeting }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetchItems().then((items) => setItems(items))
+    const db = getFirestore(app);
+    const itemRef = collection(db, "items");
+
+    const fetchItem = async () => {
+      try {
+        const querySnap = await getDocs(itemRef);
+        const items = querySnap.docs.map(doc => doc.data());
+        setItems(items);
+      } catch (err) {
+        console.error("Error", err);
+        setItems(null);
+      } finally {
+        console.log("Proceso terminado.");
+      }
+    };
+    fetchItem();
   }, []);
 
   return (
