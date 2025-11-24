@@ -15,7 +15,7 @@ const ItemListContainer = ({ greeting }) => {
     const fetchItem = async () => {
       try {
         const querySnap = await getDocs(itemRef);
-        const items = querySnap.docs.map(doc => doc.data());
+        const items = querySnap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
         setItems(items);
       } catch (err) {
         console.error("Error", err);

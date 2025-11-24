@@ -1,10 +1,14 @@
 import styles from "./CartWidget.module.css";
+import { useCart } from "../../context/CartContext";
+import { Link } from 'react-router-dom';
 
 const CartWidget = () => {
+  const { totalQuantity } = useCart();
+
   return (
-    <div className={styles.cart}>
-      🛒<span>0</span>
-    </div>
+    <Link to="/cart" className={styles.cart}>
+      🛒<span>{totalQuantity()}</span>
+    </Link>
   )
 }
 
